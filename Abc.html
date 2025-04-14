@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <title>Turnstile CAPTCHA টেস্ট</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Turnstile JS -->
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #eef1f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    form {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 400px;
+    }
+    input, button {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      font-size: 16px;
+      box-sizing: border-box;
+    }
+    button {
+      background: #28a745;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    button:hover {
+      background: #218838;
+    }
+  </style>
+</head>
+<body>
+  <form id="testForm">
+    <h2>CAPTCHA ফর্ম</h2>
+    <input type="text" name="name" placeholder="আপনার নাম" required>
+    
+    <!-- Turnstile CAPTCHA -->
+    <div class="cf-turnstile"
+         data-sitekey="0x4AAAAAABLYqaqwHAcVtrKn"
+         data-callback="onTurnstileSuccess"></div>
+
+    <input type="hidden" id="cf-turnstile-token" name="cf-turnstile-token">
+    
+    <button type="submit">সাবমিট করুন</button>
+  </form>
+
+  <script>
+    function onTurnstileSuccess(token) {
+      document.getElementById('cf-turnstile-token').value = token;
+      console.log("CAPTCHA Token:", token);
+    }
+
+    document.getElementById("testForm").addEventListener("submit", function(e) {
+      const token = document.getElementById("cf-turnstile-token").value;
+      if (!token) {
+        e.preventDefault();
+        alert("অনুগ্রহ করে CAPTCHA পূরণ করুন।");
+      } else {
+        e.preventDefault(); // শুধু ডেমোর জন্য সাবমিট বন্ধ
+        alert("ফর্ম সফলভাবে সাবমিট হয়েছে!");
+        console.log("Form submitted with token:", token);
+      }
+    });
+  </script>
+</body>
+</html>
